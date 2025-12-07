@@ -68,6 +68,13 @@ Full RPC + WS support
 
 Perfect for arbitrage systems
 
+Create JWT Secret (Required for OP Stack):
+```
+mkdir -p op-node-data
+openssl rand -hex 32 > op-node-data/jwt-secret.txt
+```
+
+Start the Base node:
 ```
 docker compose up -d
 ```
@@ -76,16 +83,27 @@ Check logs:
 ```
 docker logs -f base-node
 ```
+
+OP Geth logs:
+```
+docker logs -f op-geth
+```
+
+OP Node logs:
+```
+docker logs -f op-node
+```
+
 Test your private RPC:
 ```
-curl --location --request POST 'http://YOUR_IP:8545' \
---header 'Content-Type: application/json' \
---data-raw '{
-  "jsonrpc":"2.0",
-  "method":"eth_blockNumber",
-  "params":[],
-  "id":1
-}'
+curl -X POST http://YOUR_VPS_IP:8545 \
+-H "Content-Type: application/json" \
+-d '{"jsonrpc":"2.0","method":"eth_blockNumber","params":[],"id":1}'
+```
+
+You should see a block number like:
+```
+0x1234abcd
 ```
 
 Realtime Mempool Monitoring
