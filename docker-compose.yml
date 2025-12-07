@@ -1,0 +1,36 @@
+services:
+  base-node:
+    image: us-docker.pkg.dev/oplabs-tools-artifacts/images/op-geth:latest
+    container_name: base-node
+    restart: always
+    ports:
+      - "8545:8545"
+      - "8546:8546"
+    volumes:
+      - ./data:/root/.ethereum
+    command:
+      [
+        "--http",
+        "--http.api", "debug,eth,net,web3,txpool",
+        "--http.addr", "0.0.0.0",
+        "--http.port", "8545",
+        "--http.vhosts", "*",
+        "--ws",
+        "--ws.api", "debug,eth,net,web3,txpool",
+        "--ws.addr", "0.0.0.0",
+        "--ws.port", "8546",
+
+        "--syncmode=full",
+        "--gcmode=full",
+        "--cache=8192",
+
+        "--nodiscover",
+        "--maxpeers=0",
+        "--nat=none",
+
+        "--txpool.nolocals=false",
+        "--txpool.pricelimit=1",
+
+        "--metrics",
+        "--verbosity=3"
+      ]
